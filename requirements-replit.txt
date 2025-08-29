@@ -1,0 +1,18 @@
+# Essential requirements for Replit deployment
+streamlit==1.28.0
+sentence-transformers==2.2.2
+numpy==1.24.3
+scikit-learn==1.3.0
+nltk==3.8.1
+PyMuPDF==1.23.0
+PyPDF2==3.0.1
+python-docx==0.8.11
+pandas==2.0.3
+tiktoken==0.5.1
+scipy==1.11.1
+rank-bm25==0.2.2
+
+# Lighter alternatives for memory constraints
+# Use these if the full versions cause memory issues
+# chromadb==0.4.15  # Heavy - only if needed
+# transformers==4.35.0  # Heavy - only if needed

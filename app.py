@@ -46,12 +46,15 @@ try:
 except ImportError:
     pass
 
+# ChromaDB with error handling for deployment compatibility
 HAS_CHROMADB = False
 try:
     import chromadb
     HAS_CHROMADB = True
-except ImportError:
-    pass
+except Exception as e:
+    HAS_CHROMADB = False
+    chromadb = None
+    print(f"⚠️ ChromaDB not available: {e}. Using FAISS fallback.")
 
 HAS_FAISS = False
 try:
