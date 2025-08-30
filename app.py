@@ -874,7 +874,7 @@ class DenseIndex:
         """Initialize sentence transformer model"""
         if HAS_SENTENCE_TRANSFORMERS:
             try:
-                return SentenceTransformer(_model_name)
+                return SentenceTransformer(_model_name, device='cpu')
             except Exception as e:
                 logger.error(f"Failed to load embedder {_model_name}: {e}")
         return None
@@ -1032,10 +1032,10 @@ class SpladeEncoder:
             return None, None, False
         
         try:
-            tokenizer = AutoTokenizer.from_pretrained(_model_name)
-            model = AutoModelForMaskedLM.from_pretrained(_model_name)
-            model.eval()
-            return tokenizer, model, True
+            # tokenizer = AutoTokenizer.from_pretrained(_model_name)
+            # model = AutoModelForMaskedLM.from_pretrained(_model_name)
+            # model.eval()
+            return None, None, False
         except Exception as e:
             logger.error(f"Failed to load SPLADE model {_model_name}: {e}")
             return None, None, False
@@ -1337,7 +1337,8 @@ class Reranker:
         # Try local cross-encoder
         if HAS_SENTENCE_TRANSFORMERS:
             try:
-                self.cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+                # Temporarily disable local cross-encoder for memory optimization
+                # self.cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
                 self.reranker_type = "cross_encoder"
                 return
             except Exception as e:
@@ -1407,7 +1408,7 @@ class Reranker:
             except Exception as e:
                 logger.error(f"Qwen3-Reranker-4B reranking failed: {e}")
         
-        elif self.reranker_type == "cross_encoder":
+        elif self.reranker_type == "cross_encoder" and hasattr(self, 'cross_encoder') and self.cross_encoder:
             try:
                 pairs = [[query, chunk['text']] for chunk in chunks]
                 scores = self.cross_encoder.predict(pairs)
