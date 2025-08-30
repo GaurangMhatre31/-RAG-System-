@@ -872,6 +872,12 @@ class DenseIndex:
     @st.cache_resource
     def _load_embedder_model(_model_name):
         """Initialize sentence transformer model"""
+        # Skip model loading in resource-constrained environments (like public Codespace)
+        import os
+        if os.environ.get('CODESPACE_NAME') or os.environ.get('SKIP_MODEL_LOADING'):
+            logger.warning("Skipping model loading in resource-constrained environment")
+            return None
+            
         if HAS_SENTENCE_TRANSFORMERS:
             try:
                 return SentenceTransformer(_model_name, device='cpu')
