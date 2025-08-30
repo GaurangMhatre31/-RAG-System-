@@ -1,4 +1,4 @@
-# Minimal Streamlit Cloud compatible requirements
+# Minimal working requirements for deployment
 streamlit>=1.28.0
 sentence-transformers>=2.2.2
 numpy>=1.24.0
